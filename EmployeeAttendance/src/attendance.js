@@ -1,9 +1,10 @@
 const FULL_TIME = 8;
 const PART_TIME = 4;
 const WAGE_PER_HOUR = 20;
-const WORKING_DAYS = 20;
+const MAX_WORKING_DAYS = 20;
+const MAX_WORKING_HOURS = 160;
 
-// Function to check employee status
+// Function to get work hours
 function getWorkHours() {
     let empCheck = Math.floor(Math.random() * 3); // 0, 1, 2
     switch (empCheck) {
@@ -13,16 +14,22 @@ function getWorkHours() {
     }
 }
 
-let totalDays = 0, totalWage = 0;
+let totalDays = 0, totalHours = 0, totalWage = 0;
 
-while (totalDays < WORKING_DAYS) {
+while (totalDays < MAX_WORKING_DAYS && totalHours < MAX_WORKING_HOURS) {
     let { hours, status } = getWorkHours();  // Getting work hours + status
+    
+    if (totalHours + hours > MAX_WORKING_HOURS) break; // Stop if adding hours exceeds 160
+    
     let dailyWage = hours * WAGE_PER_HOUR;
     
     totalWage += dailyWage;
     totalDays++;
-    
+    totalHours += hours;
+
     console.log(`Day ${totalDays}: Status = ${status}, Work Hours = ${hours}, Wage = $${dailyWage}`);
 }
 
-console.log(`Total Wage for ${WORKING_DAYS} days = $${totalWage}`);
+console.log(`\nTotal Days Worked = ${totalDays}`);
+console.log(`Total Hours Worked = ${totalHours}`);
+console.log(`Total Wage = $${totalWage}`);
