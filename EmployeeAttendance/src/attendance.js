@@ -13,8 +13,7 @@ const getWorkHours = () => {
 }
 
 let totalDays = 0, totalHours = 0;
-let dayWageMap = new Map();
-let dayHourMap = new Map();
+let empDailyData = []; // Array to store objects
 
 while (totalDays < MAX_WORKING_DAYS && totalHours < MAX_WORKING_HOURS) {
     let { hours, status } = getWorkHours();  
@@ -25,23 +24,11 @@ while (totalDays < MAX_WORKING_DAYS && totalHours < MAX_WORKING_HOURS) {
     
     totalDays++;
     totalHours += hours;
-    
-    dayWageMap.set(totalDays, dailyWage);
-    dayHourMap.set(totalDays, hours);
+
+    // **Store data in an object**
+    empDailyData.push({ day: totalDays, hours, wage: dailyWage, status });
 }
 
-// **UC9A: Compute Total Wage and Total Hours using Arrow Function**
-const totalWage = [...dayWageMap.values()].reduce((s, w) => s + w, 0);
-const totalHoursWorked = [...dayHourMap.values()].reduce((s, h) => s + h, 0);
-
-// **UC9B: Categorize Full, Part, and No Working Days**
-const fullWorkingDays = [...dayHourMap.entries()].filter(d => d[1] === FULL_TIME).map(d => d[0]);
-const partWorkingDays = [...dayHourMap.entries()].filter(d => d[1] === PART_TIME).map(d => d[0]);
-const noWorkingDays = [...dayHourMap.entries()].filter(d => d[1] === 0).map(d => d[0]);
-
-// **Printing Results**
-console.log(`\nUC9A: Total Wage = $${totalWage}, Total Hours Worked = ${totalHoursWorked}`);
-
-console.log(`\nUC9B: Full Working Days: ${fullWorkingDays}`);
-console.log(`Part Working Days: ${partWorkingDays}`);
-console.log(`No Working Days: ${noWorkingDays}`);
+// **Printing the Stored Data**
+console.log("\nUC10: Employee Daily Data:");
+console.table(empDailyData);
