@@ -1,21 +1,28 @@
+const FULL_TIME = 8;
+const PART_TIME = 4;
+const WAGE_PER_HOUR = 20;
+const WORKING_DAYS = 20;
+
+// Function to check employee status
 function getWorkHours() {
-    let empHours = Math.floor(Math.random() * 3); // Generates 0, 1, or 2
-    switch (empHours) {
-        case 0: return 0;  // Absent
-        case 1: return 4;  // Part-Time
-        case 2: return 8;  // Full-Time
+    let empCheck = Math.floor(Math.random() * 3); // 0, 1, 2
+    switch (empCheck) {
+        case 0: return { hours: 0, status: "Absent" };       // Absent
+        case 1: return { hours: PART_TIME, status: "Part-Time" }; // Part Time
+        case 2: return { hours: FULL_TIME, status: "Full-Time" }; // Full Time
     }
 }
 
-let wagePerHour = 20;
-let totalWage = 0;
-let days = 20; // Fixed count loop for 20 days
+let totalDays = 0, totalWage = 0;
 
-for (let i = 1; i <= days; i++) {
-    let hoursWorked = getWorkHours();
-    let dailyWage = hoursWorked * wagePerHour;
+while (totalDays < WORKING_DAYS) {
+    let { hours, status } = getWorkHours();  // Getting work hours + status
+    let dailyWage = hours * WAGE_PER_HOUR;
+    
     totalWage += dailyWage;
-    console.log(`Day ${i}: Work Hours = ${hoursWorked}, Wage = $${dailyWage}`);
+    totalDays++;
+    
+    console.log(`Day ${totalDays}: Status = ${status}, Work Hours = ${hours}, Wage = $${dailyWage}`);
 }
 
-console.log("Total Wage for 20 Days: $" + totalWage);
+console.log(`Total Wage for ${WORKING_DAYS} days = $${totalWage}`);
