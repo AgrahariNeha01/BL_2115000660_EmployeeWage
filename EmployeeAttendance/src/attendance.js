@@ -1,20 +1,21 @@
-let empHours = Math.floor(Math.random() * 3); // Generates 0, 1, or 2
-let wagePerHour = 20;
-let dailyWage = 0;
-
-switch (empHours) {
-    case 0:
-        console.log("Employee is Absent");
-        dailyWage = 0;
-        break;
-    case 1:
-        console.log("Employee is Part-Time (4 Hours)");
-        dailyWage = 4 * wagePerHour;
-        break;
-    case 2:
-        console.log("Employee is Full-Time (8 Hours)");
-        dailyWage = 8 * wagePerHour;
-        break;
+function getWorkHours() {
+    let empHours = Math.floor(Math.random() * 3); // Generates 0, 1, or 2
+    switch (empHours) {
+        case 0: return 0;  // Absent
+        case 1: return 4;  // Part-Time
+        case 2: return 8;  // Full-Time
+    }
 }
 
-console.log("Daily Employee Wage: $" + dailyWage);
+let wagePerHour = 20;
+let totalWage = 0;
+let days = 20; // Fixed count loop for 20 days
+
+for (let i = 1; i <= days; i++) {
+    let hoursWorked = getWorkHours();
+    let dailyWage = hoursWorked * wagePerHour;
+    totalWage += dailyWage;
+    console.log(`Day ${i}: Work Hours = ${hoursWorked}, Wage = $${dailyWage}`);
+}
+
+console.log("Total Wage for 20 Days: $" + totalWage);
