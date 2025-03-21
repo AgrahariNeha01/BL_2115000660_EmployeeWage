@@ -1,50 +1,56 @@
-const FULL_TIME = 8;
-const PART_TIME = 4;
-const WAGE_PER_HOUR = 20;
-const MAX_WORKING_DAYS = 20;
-const MAX_WORKING_HOURS = 160;
+class Employee {
+    constructor(id, name, salary, gender, startDate, hours) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+        this.gender = gender;
+        this.startDate = startDate;
+        this.hours = hours;
+    }
 
-// Function to get work hours and status
-const getWorkHours = () => {
-    let empCheck = Math.floor(Math.random() * 3); // 0, 1, 2
-    return empCheck === 0 ? { hours: 0, status: "Absent" } :
-           empCheck === 1 ? { hours: PART_TIME, status: "Part-Time" } :
-                            { hours: FULL_TIME, status: "Full-Time" };
+    // Arrow function to display employee details
+    getDetails = () => 
+        `ID: ${this.id}, Name: ${this.name}, Salary: $${this.salary}, Gender: ${this.gender}, Start Date: ${this.startDate}, Hours: ${this.hours}`;
 }
 
-let totalDays = 0, totalHours = 0;
-let empDailyData = []; // Array to store objects
+// Employee Objects
+const emp1 = new Employee(1, "Neha", 50000, "Female", "2024-03-20", 8);
+const emp2 = new Employee(2, "Amit", 40000, "Male", "2024-03-18", 4);
+const emp3 = new Employee(3, "Riya", 45000, "Female", "2024-03-15", 0);
 
-while (totalDays < MAX_WORKING_DAYS && totalHours < MAX_WORKING_HOURS) {
-    let { hours, status } = getWorkHours();  
-    
-    if (totalHours + hours > MAX_WORKING_HOURS) break;
-    
-    let dailyWage = hours * WAGE_PER_HOUR;
-    
-    totalDays++;
-    totalHours += hours;
+// Storing Employees in an Array
+const employees = [emp1, emp2, emp3];
 
-    // **Store data in an object**
-    empDailyData.push({ day: totalDays, hours, wage: dailyWage, status });
-}
+// UC11 (Object Operations using Arrow Functions)
 
-// **UC 11a: Calculate total wage & total hours using reduce**
-const totalWage = empDailyData.reduce((sum, d) => sum + d.wage, 0);
-const totalWorkHours = empDailyData.reduce((sum, d) => sum + d.hours, 0);
+// a. Calculate Total Salary and Total Hours Worked
+const totalSalary = employees.reduce((sum, emp) => sum + emp.salary, 0);
+const totalHours = employees.reduce((sum, emp) => sum + emp.hours, 0);
 
-// **UC 11b: Show full working days using forEach**
+// b. Show Full Working Days (Using forEach)
 console.log("\nFull Working Days:");
-empDailyData.forEach(d => { if (d.hours === FULL_TIME) console.log(`Day ${d.day}`); });
+employees.forEach(emp => {
+    if (emp.hours === 8) console.log(emp.getDetails());
+});
 
-// **UC 11c: Show Part working days using Map by reducing to String Array**
-const partTimeDays = empDailyData.filter(d => d.hours === PART_TIME).map(d => `Day ${d.day}`);
-console.log("\nPart-Time Days:", partTimeDays.join(", "));
+// c. Show Part Working Days (Using Map)
+const partTimeDays = employees
+    .filter(emp => emp.hours === 4)
+    .map(emp => emp.name);
+console.log("\nPart Working Days:", partTimeDays);
 
-// **UC 11d: Show No working days using Map**
-const noWorkDays = empDailyData.filter(d => d.hours === 0).map(d => `Day ${d.day}`);
-console.log("\nNo Working Days:", noWorkDays.join(", "));
+// d. Show No Working Days (Using Map)
+const noWorkDays = employees
+    .filter(emp => emp.hours === 0)
+    .map(emp => emp.name);
+console.log("\nNo Working Days:", noWorkDays);
 
-// **Printing Final Summary**
-console.log(`\nTotal Wage = $${totalWage}`);
-console.log(`Total Hours Worked = ${totalWorkHours}`);
+// UC12 (Extending Employee Payroll Data)
+
+// Printing Employee Details
+console.log("\nEmployee Payroll Data:");
+employees.forEach(emp => console.log(emp.getDetails()));
+
+// Total Salary & Hours Worked
+console.log(`\nTotal Salary Paid = $${totalSalary}`);
+console.log(`Total Hours Worked = ${totalHours}`);
