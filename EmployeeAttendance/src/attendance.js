@@ -5,17 +5,16 @@ const MAX_WORKING_DAYS = 20;
 const MAX_WORKING_HOURS = 160;
 
 // Function to get work hours and status
-function getWorkHours() {
+const getWorkHours = () => {
     let empCheck = Math.floor(Math.random() * 3); // 0, 1, 2
-    switch (empCheck) {
-        case 0: return { hours: 0, status: "Absent" };       // Absent
-        case 1: return { hours: PART_TIME, status: "Part-Time" }; // Part Time
-        case 2: return { hours: FULL_TIME, status: "Full-Time" }; // Full Time
-    }
+    return empCheck === 0 ? { hours: 0, status: "Absent" } :
+           empCheck === 1 ? { hours: PART_TIME, status: "Part-Time" } :
+                            { hours: FULL_TIME, status: "Full-Time" };
 }
 
 let totalDays = 0, totalHours = 0;
-let dayWageMap = new Map(); // Map to store Day-wise Wage
+let dayWageMap = new Map();
+let dayHourMap = new Map();
 
 while (totalDays < MAX_WORKING_DAYS && totalHours < MAX_WORKING_HOURS) {
     let { hours, status } = getWorkHours();  
@@ -27,16 +26,22 @@ while (totalDays < MAX_WORKING_DAYS && totalHours < MAX_WORKING_HOURS) {
     totalDays++;
     totalHours += hours;
     
-    dayWageMap.set(totalDays, { hours, wage: dailyWage, status }); // Store in Map
+    dayWageMap.set(totalDays, dailyWage);
+    dayHourMap.set(totalDays, hours);
 }
 
-// **UC8A: Compute Total Wage using Map**
-let totalWage = Array.from(dayWageMap.values()).reduce((s, d) => s + d.wage, 0);
+// **UC9A: Compute Total Wage and Total Hours using Arrow Function**
+const totalWage = [...dayWageMap.values()].reduce((s, w) => s + w, 0);
+const totalHoursWorked = [...dayHourMap.values()].reduce((s, h) => s + h, 0);
+
+// **UC9B: Categorize Full, Part, and No Working Days**
+const fullWorkingDays = [...dayHourMap.entries()].filter(d => d[1] === FULL_TIME).map(d => d[0]);
+const partWorkingDays = [...dayHourMap.entries()].filter(d => d[1] === PART_TIME).map(d => d[0]);
+const noWorkingDays = [...dayHourMap.entries()].filter(d => d[1] === 0).map(d => d[0]);
 
 // **Printing Results**
-console.log("\nUC8: Day-wise Wage using Map:");
-dayWageMap.forEach((d, day) => {
-    console.log(`Day ${day}: Status = ${d.status}, Work Hours = ${d.hours}, Wage = $${d.wage}`);
-});
+console.log(`\nUC9A: Total Wage = $${totalWage}, Total Hours Worked = ${totalHoursWorked}`);
 
-console.log(`\nTotal Wage = $${totalWage}`);
+console.log(`\nUC9B: Full Working Days: ${fullWorkingDays}`);
+console.log(`Part Working Days: ${partWorkingDays}`);
+console.log(`No Working Days: ${noWorkingDays}`);
